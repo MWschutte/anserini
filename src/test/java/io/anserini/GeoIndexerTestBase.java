@@ -16,9 +16,8 @@
 
 package io.anserini;
 
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.LatLonShape;
+import io.anserini.index.IndexArgs;
+import org.apache.lucene.document.*;
 import org.apache.lucene.geo.Line;
 import org.apache.lucene.geo.Polygon;
 import org.apache.lucene.geo.SimpleWKTShapeParser;
@@ -60,6 +59,7 @@ public class GeoIndexerTestBase extends LuceneTestCase {
       for (Field f: fields) {
         doc1.add(f);
       }
+      doc1.add(new StringField(IndexArgs.ID, "id", Field.Store.YES));
       writer.addDocument(doc1);
 
       // Index Polygon with a hole in it using SimpleWKTShapeParser
@@ -73,6 +73,7 @@ public class GeoIndexerTestBase extends LuceneTestCase {
       for (Field f: fields2) {
         doc2.add(f);
       }
+      doc2.add(new StringField(IndexArgs.ID, "id", Field.Store.YES));
       writer.addDocument(doc2);
 
       // Index MultiPolygon using SimpleWKTShapeParser
@@ -88,6 +89,7 @@ public class GeoIndexerTestBase extends LuceneTestCase {
           doc3.add(f);
         }
       }
+      doc3.add(new StringField(IndexArgs.ID, "id", Field.Store.YES));
       writer.addDocument(doc3);
 
       // Index LineString using SimpleWKTShapeParser
@@ -101,6 +103,7 @@ public class GeoIndexerTestBase extends LuceneTestCase {
       for (Field f: fields4) {
         doc4.add(f);
       }
+      doc4.add(new StringField(IndexArgs.ID, "id", Field.Store.YES));
       writer.addDocument(doc4);
 
       // Index MultiLineString using SimpleWKTShapeParser
@@ -116,6 +119,7 @@ public class GeoIndexerTestBase extends LuceneTestCase {
           doc5.add(f);
         }
       }
+      doc5.add(new StringField(IndexArgs.ID, "id", Field.Store.YES));
       writer.addDocument(doc5);
 
       // Index Grand River (a LineString) using SimpleWKTShapeParser
@@ -129,7 +133,39 @@ public class GeoIndexerTestBase extends LuceneTestCase {
       for (Field f: fields6) {
         doc6.add(f);
       }
+      doc6.add(new StringField(IndexArgs.ID, "id", Field.Store.YES));
       writer.addDocument(doc6);
+
+      // Index LineStrings for testing the sorted search feature using SimpleWKTShapeParser
+      Path path7 = Paths.get("src/test/resources/sample_docs/geosearch/line_sorted.wkt");
+      List<String> listLines7 = Files.readAllLines(path7);
+      String[] lines7 = listLines7.toArray(new String[0]);
+
+      // first line in line_sorted.wkt
+      Document doc7 = new Document();
+      Line lineShapeSorted1 = (Line) SimpleWKTShapeParser.parse(lines7[0]);
+      Field[] fields7 = LatLonShape.createIndexableFields("geometry", lineShapeSorted1);
+      for (Field f: fields7) {
+        doc7.add(f);
+      }
+      for (int i = 0; i < lineShapeSorted1.numPoints(); ++i) {
+        doc7.add(new LatLonDocValuesField("point", lineShapeSorted1.getLat(i), lineShapeSorted1.getLon(i)));
+      }
+      doc7.add(new StringField(IndexArgs.ID, "id", Field.Store.YES));
+      writer.addDocument(doc7);
+
+      // second line in line_sorted.wkt
+      Document doc8 = new Document();
+      Line lineShapeSorted2 = (Line) SimpleWKTShapeParser.parse(lines7[1]);
+      Field[] fields8 = LatLonShape.createIndexableFields("geometry", lineShapeSorted2);
+      for (Field f: fields8) {
+        doc8.add(f);
+      }
+      for (int i = 0; i < lineShapeSorted2.numPoints(); ++i) {
+        doc8.add(new LatLonDocValuesField("point", lineShapeSorted2.getLat(i), lineShapeSorted2.getLon(i)));
+      }
+      doc8.add(new StringField(IndexArgs.ID, "id", Field.Store.YES));
+      writer.addDocument(doc8);
 
 
       writer.commit();

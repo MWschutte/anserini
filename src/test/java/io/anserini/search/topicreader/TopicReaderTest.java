@@ -37,7 +37,7 @@ public class TopicReaderTest {
       String[] pathParts = topic.path.split("/");
       assertEquals(topic.readerClass, TopicReader.getTopicReaderClassByFile(pathParts[1]));
     }
-    assertEquals(113, cnt);
+    assertEquals(123, cnt);
   }
 
   @Test
@@ -630,6 +630,23 @@ public class TopicReaderTest {
     assertEquals("how is the weather in jamaica", topics.get(topics.lastKey()).get("title"));
     assertEquals("does legionella pneumophila cause pneumonia", topics.get(168216).get("title"));
 
+    topics = TopicReader.getTopics(Topics.TREC2019_DL_PASSAGE_UNICOIL);
+    assertNotNull(topics);
+    assertEquals(43, topics.size());
+    assertEquals(19335, (int) topics.firstKey());
+    assertEquals(695, topics.get(topics.firstKey()).get("title").split(" ").length);
+    assertEquals(1133167, (int) topics.lastKey());
+    assertEquals(595, topics.get(topics.lastKey()).get("title").split(" ").length);
+
+    topics = TopicReader.getTopics(Topics.TREC2019_DL_PASSAGE_UNICOIL_NOEXP);
+    assertNotNull(topics);
+    assertEquals(43, topics.size());
+    assertEquals(19335, (int) topics.firstKey());
+    assertEquals(668, topics.get(topics.firstKey()).get("title").split(" ").length);
+    assertEquals(1133167, (int) topics.lastKey());
+    assertEquals(586, topics.get(topics.lastKey()).get("title").split(" ").length);
+
+
     topics = TopicReader.getTopics(Topics.TREC2019_DL_DOC);
     assertNotNull(topics);
     assertEquals(43, topics.size());
@@ -638,6 +655,22 @@ public class TopicReaderTest {
     assertEquals(1133167, (int) topics.lastKey());
     assertEquals("how is the weather in jamaica", topics.get(topics.lastKey()).get("title"));
     assertEquals("how long to hold bow in yoga", topics.get(1132213).get("title"));
+
+    topics = TopicReader.getTopics(Topics.TREC2019_DL_DOC_UNICOIL);
+    assertNotNull(topics);
+    assertEquals(43, topics.size());
+    assertEquals(19335, (int) topics.firstKey());
+    assertEquals(695, topics.get(topics.firstKey()).get("title").split(" ").length);
+    assertEquals(1133167, (int) topics.lastKey());
+    assertEquals(595, topics.get(topics.lastKey()).get("title").split(" ").length);
+
+    topics = TopicReader.getTopics(Topics.TREC2019_DL_DOC_UNICOIL_NOEXP);
+    assertNotNull(topics);
+    assertEquals(43, topics.size());
+    assertEquals(19335, (int) topics.firstKey());
+    assertEquals(668, topics.get(topics.firstKey()).get("title").split(" ").length);
+    assertEquals(1133167, (int) topics.lastKey());
+    assertEquals(586, topics.get(topics.lastKey()).get("title").split(" ").length);
   }
 
   @Test
@@ -652,6 +685,22 @@ public class TopicReaderTest {
     assertEquals(1136962, (int) topics.lastKey());
     assertEquals("why did the ancient egyptians call their land kemet, or black land?", topics.get(topics.lastKey()).get("title"));
     assertEquals("who is aziz hashim", topics.get(1030303).get("title"));
+
+    topics = TopicReader.getTopics(Topics.TREC2020_DL_UNICOIL);
+    assertNotNull(topics);
+    assertEquals(200, topics.size());
+    assertEquals(3505, (int) topics.firstKey());
+    assertEquals(706, topics.get(topics.firstKey()).get("title").split(" ").length);
+    assertEquals(1136962, (int) topics.lastKey());
+    assertEquals(1169, topics.get(topics.lastKey()).get("title").split(" ").length);
+
+    topics = TopicReader.getTopics(Topics.TREC2020_DL_UNICOIL_NOEXP);
+    assertNotNull(topics);
+    assertEquals(200, topics.size());
+    assertEquals(3505, (int) topics.firstKey());
+    assertEquals(689, topics.get(topics.firstKey()).get("title").split(" ").length);
+    assertEquals(1136962, (int) topics.lastKey());
+    assertEquals(1164, topics.get(topics.lastKey()).get("title").split(" ").length);
   }
 
   @Test
@@ -666,6 +715,22 @@ public class TopicReaderTest {
     assertEquals(1136769, (int) topics.lastKey());
     assertEquals("why does lacquered brass tarnish", topics.get(topics.lastKey()).get("title"));
     assertEquals("who killed nicholas ii of russia", topics.get(1043135).get("title"));
+
+    topics = TopicReader.getTopics(Topics.TREC2021_DL_UNICOIL);
+    assertNotNull(topics);
+    assertEquals(477, topics.size());
+    assertEquals(2082, (int) topics.firstKey());
+    assertEquals(693, topics.get(topics.firstKey()).get("title").split(" ").length);
+    assertEquals(1136769, (int) topics.lastKey());
+    assertEquals(712, topics.get(topics.lastKey()).get("title").split(" ").length);
+
+    topics = TopicReader.getTopics(Topics.TREC2021_DL_UNICOIL_NOEXP);
+    assertNotNull(topics);
+    assertEquals(477, topics.size());
+    assertEquals(2082, (int) topics.firstKey());
+    assertEquals(624, topics.get(topics.firstKey()).get("title").split(" ").length);
+    assertEquals(1136769, (int) topics.lastKey());
+    assertEquals(633, topics.get(topics.lastKey()).get("title").split(" ").length);
   }
 
   @Test
@@ -687,6 +752,14 @@ public class TopicReaderTest {
     assertEquals(617, topics.get(topics.firstKey()).get("title").split(" ").length);
     assertEquals(1102400, (int) topics.lastKey());
     assertEquals(682, topics.get(topics.lastKey()).get("title").split(" ").length);
+
+    topics = TopicReader.getTopics(Topics.MSMARCO_DOC_DEV_UNICOIL_NOEXP);
+    assertNotNull(topics);
+    assertEquals(5193, topics.size());
+    assertEquals(2, (int) topics.firstKey());
+    assertEquals(609, topics.get(topics.firstKey()).get("title").split(" ").length);
+    assertEquals(1102400, (int) topics.lastKey());
+    assertEquals(577, topics.get(topics.lastKey()).get("title").split(" ").length);
 
     topics = TopicReader.getTopics(Topics.MSMARCO_DOC_TEST);
     assertNotNull(topics);
@@ -712,12 +785,19 @@ public class TopicReaderTest {
     assertEquals(1102400, (int) topics.lastKey());
     assertEquals("why hibernate bears", topics.get(topics.lastKey()).get("title"));
 
-    topics = TopicReader.getTopics(Topics.MSMARCO_PASSAGE_DEV_SUBSET_UNICOIL_D2Q);
+    topics = TopicReader.getTopics(Topics.MSMARCO_PASSAGE_DEV_SUBSET_UNICOIL);
     assertNotNull(topics);
     assertEquals(6980, topics.size());
     assertEquals(619, topics.get(topics.firstKey()).get("title").split(" ").length);
     assertEquals(1102400, (int) topics.lastKey());
     assertEquals(686, topics.get(topics.lastKey()).get("title").split(" ").length);
+
+    topics = TopicReader.getTopics(Topics.MSMARCO_PASSAGE_DEV_SUBSET_UNICOIL_NOEXP);
+    assertNotNull(topics);
+    assertEquals(6980, topics.size());
+    assertEquals(609, topics.get(topics.firstKey()).get("title").split(" ").length);
+    assertEquals(1102400, (int) topics.lastKey());
+    assertEquals(577, topics.get(topics.lastKey()).get("title").split(" ").length);
 
     topics = TopicReader.getTopics(Topics.MSMARCO_PASSAGE_DEV_SUBSET_UNICOIL_TILDE);
     assertNotNull(topics);
