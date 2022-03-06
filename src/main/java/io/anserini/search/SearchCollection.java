@@ -30,6 +30,7 @@ import io.anserini.rerank.lib.BM25PrfReranker;
 import io.anserini.rerank.lib.NewsBackgroundLinkingReranker;
 import io.anserini.rerank.lib.Rm3Reranker;
 import io.anserini.rerank.lib.ScoreTiesAdjusterReranker;
+import io.anserini.search.query.ExpandedQueryGenerator;
 import io.anserini.search.query.QueryGenerator;
 import io.anserini.search.query.SdmQueryGenerator;
 import io.anserini.search.similarity.AccurateBM25Similarity;
@@ -462,6 +463,7 @@ public final class SearchCollection implements Closeable {
       LOG.info("Stopwords file: " + args.stopwords);
       LOG.info("Number of threads for running different parameter configurations: " + args.threads);
       LOG.info("Number of threads for running each individual parameter configuration: " + args.parallelism);
+      LOG.info("alpha " + args.alpha);
     }
 
     isRerank = args.rm3 || args.axiom || args.bm25prf;
@@ -717,11 +719,15 @@ public final class SearchCollection implements Closeable {
 
     if (args.sdm) {
       query = new SdmQueryGenerator(args.sdm_tw, args.sdm_ow, args.sdm_uw).buildQuery(IndexArgs.CONTENTS, analyzer, queryString);
+    } else if (args.queryGenerator.equalsIgnoreCase("ExpandedQueryGenerator")) { 
+      ExpandedQueryGenerator expandedGgenerator = new ExpandedQueryGenerator();
+      expandedGgenerator.setAlpha(args.alpha);
+      query = expandedGgenerator.buildQuery(IndexArgs.CONTENTS, analyzer, queryString);
     } else {
       QueryGenerator generator;
       try {
         generator = (QueryGenerator) Class.forName("io.anserini.search.query." + args.queryGenerator)
-            .getConstructor().newInstance();
+          .getConstructor().newInstance();
       } catch (Exception e) {
         e.printStackTrace();
         throw new IllegalArgumentException("Unable to load QueryGenerator: " + args.topicReader);

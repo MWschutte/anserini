@@ -43,6 +43,9 @@ public class SearchArgs {
   @Option(name = "-parallelism", metaVar = "[int]", usage = "Number of threads to use for each individual parameter configuration.")
   public int parallelism = 8;
 
+  @Option(name = "-alpha", metaVar= "[number]", usage = "float to deterimine weight of expanded terms")
+  public float alpha = 1;
+
   @Option(name = "-language", usage = "Analyzer Language")
   public String language = "en";
 
